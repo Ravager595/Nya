@@ -163,8 +163,8 @@
     fill: none;
     stroke-width: 6;
     stroke-linecap: round;
-    stroke-dasharray: 420;
-    stroke-dashoffset: 420;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
     transition: stroke-dashoffset 1.3s ease-in-out;
   }
   .tallo.on { stroke-dashoffset: 0; }
@@ -243,10 +243,9 @@
           </filter>
         </defs>
 
-    
         <g id="planta-izq">
           <ellipse class="semilla" id="semilla-izq" cx="150" cy="360" rx="9" ry="7" fill="var(--semilla)"/>
-          <path class="tallo" id="tallo-izq" stroke="url(#gradTallo)"
+          <path class="tallo" id="tallo-izq" stroke="url(#gradTallo)" pathLength="1"
                 d="M150,360 C136,320 100,270 88,220 C79,183 84,150 92,118" />
           <g transform="translate(96,255) rotate(-135)"><ellipse class="hoja" id="hoja1-izq" cx="0" cy="0" rx="15" ry="9" fill="var(--tallo-2)"/></g>
           <g transform="translate(84,205) rotate(-40)"><ellipse class="hoja" id="hoja2-izq" cx="0" cy="0" rx="15" ry="9" fill="var(--tallo-1)"/></g>
@@ -260,10 +259,9 @@
           </g>
         </g>
 
-     
         <g id="planta-der">
           <ellipse class="semilla" id="semilla-der" cx="150" cy="360" rx="9" ry="7" fill="var(--semilla)"/>
-          <path class="tallo" id="tallo-der" stroke="url(#gradTallo)"
+          <path class="tallo" id="tallo-der" stroke="url(#gradTallo)" pathLength="1"
                 d="M150,360 C164,320 200,270 212,220 C221,183 216,150 208,128" />
           <g transform="translate(204,255) rotate(135)"><ellipse class="hoja" id="hoja1-der" cx="0" cy="0" rx="15" ry="9" fill="var(--tallo-2)"/></g>
           <g transform="translate(216,205) rotate(40)"><ellipse class="hoja" id="hoja2-der" cx="0" cy="0" rx="15" ry="9" fill="var(--tallo-1)"/></g>
@@ -279,9 +277,8 @@
 
         <g id="planta-centro">
           <ellipse class="semilla" id="semilla-centro" cx="150" cy="360" rx="10" ry="8" fill="var(--semilla)"/>
-         <path class="tallo tallo-centro" id="tallo-centro"
-              stroke="url(#gradTallo)"
-                   d="M150,360 C150,320 148,285 150,245 C153,205 147,170 150,135 C152,105 150,78 150,55" />
+          <path class="tallo tallo-centro" id="tallo-centro" stroke="url(#gradTallo)" pathLength="1"
+                d="M150,360 C150,320 148,285 150,245 C153,205 147,170 150,135 C152,105 150,78 150,55" />
           <g transform="translate(150,210) rotate(-160)"><ellipse class="hoja" id="hoja1-centro" cx="0" cy="0" rx="17" ry="10" fill="var(--tallo-1)"/></g>
           <g transform="translate(150,165) rotate(-20)"><ellipse class="hoja" id="hoja2-centro" cx="0" cy="0" rx="17" ry="10" fill="var(--tallo-2)"/></g>
           <g transform="translate(150,55) scale(1.05)">
@@ -303,7 +300,6 @@
   </div>
 
 <script>
-
   const cielo = document.getElementById('cielo');
   for (let i = 0; i < 55; i++) {
     const e = document.createElement('div');
