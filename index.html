@@ -1,72 +1,362 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para ti, mi linda vampira 🦇</title>
-    <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para ti, mi linda vampira 🦇🩸</title>
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --negro: #050308;
+    --blanco: #f5f0f2;
+    --tallo-1: #2f5c3c;
+    --tallo-2: #4c8a58;
+    --semilla: #6b4a34;
+    --rosa-claro: #ffd9e6;
+    --rosa-medio: #ff9dc0;
+    --rosa-fuerte: #ef6f9c;
+    --rosa-sombra: #b8497a;
+  }
 
-    <style>
-        body {
-            margin: 0;
-            min-height: 100vh;
+  * { box-sizing: border-box; }
 
-            background-color: #000000;
-            color: #ffffff;
+  html, body { height: 100%; }
 
-            display: flex;
-            justify-content: center;
-            align-items: center;
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: radial-gradient(ellipse at 50% 15%, #170c1f 0%, var(--negro) 65%);
+    color: var(--blanco);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: "Cormorant Garamond", serif;
+    overflow: hidden;
+    padding: 24px;
+    position: relative;
+  }
 
-            text-align: center;
-            font-family: "UnifrakturCook", serif;
-        }
-        .contenedor {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      135deg,
+      rgba(255,255,255,0.025) 0px,
+      rgba(255,255,255,0.025) 1px,
+      transparent 1px,
+      transparent 7px
+    );
+    pointer-events: none;
+  }
 
-            gap: 20px;
-        }
-        h1 {
-            font-size: 60px;
-            margin: 0;
-        }
-        p {
-            font-size: 25px;
-            margin: 0;
-        }
-        button {
-            font-family: "UnifrakturCook", serif;
-            font-size: 22px;
-            padding: 12px 25px;
-            background-color: #000000;
-            color: #ffffff;
-            border: 2px solid #ffffff;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+  .cielo {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .estrella {
+    position: absolute;
+    background: #ffffff;
+    border-radius: 50%;
+    animation: parpadeo 3.2s ease-in-out infinite;
+  }
+  .luciernaga {
+    position: absolute;
+    background: #ffe9a8;
+    border-radius: 50%;
+    box-shadow: 0 0 6px 2px rgba(255, 233, 168, 0.6);
+    animation: flotar 6s ease-in-out infinite;
+  }
+  @keyframes parpadeo {
+    0%, 100% { opacity: 0.25; }
+    50% { opacity: 1; }
+  }
+  @keyframes flotar {
+    0%, 100% { transform: translateY(0) translateX(0); opacity: 0.5; }
+    50% { transform: translateY(-10px) translateX(4px); opacity: 1; }
+  }
 
-        /* Efecto al pasar el mouse */
-        button:hover {
-            background-color: #ffffff;
-            color: #000000;
-        }
+  .escena {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+    max-width: 640px;
+    position: relative;
+    z-index: 2;
+  }
 
-    </style>
+  h1 {
+    font-family: "UnifrakturCook", serif;
+    font-size: 56px;
+    margin: 0;
+    letter-spacing: 1px;
+    text-shadow: 0 0 18px rgba(230, 120, 160, 0.35);
+  }
+
+  p.intro {
+    font-size: 24px;
+    margin: 0;
+    color: #e7dde3;
+  }
+
+  button {
+    font-family: "UnifrakturCook", serif;
+    font-size: 21px;
+    padding: 12px 28px;
+    background-color: transparent;
+    color: var(--blanco);
+    border: 2px solid var(--blanco);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.35s;
+    letter-spacing: 1px;
+  }
+  button:hover {
+    background-color: var(--blanco);
+    color: var(--negro);
+    box-shadow: 0 0 22px rgba(245, 240, 242, 0.5);
+  }
+
+  .intro-grupo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+  .intro-grupo.oculto {
+    opacity: 0;
+    transform: translateY(-16px) scale(0.96);
+    pointer-events: none;
+    position: absolute;
+  }
+
+  .jardin-wrap {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .jardin-wrap.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .ramo {
+    width: min(78vw, 320px);
+    height: auto;
+    overflow: visible;
+  }
+
+  .semilla {
+    opacity: 0;
+    transform: scale(0);
+    transform-origin: 0 0;
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(.34,1.56,.64,1);
+  }
+  .semilla.on { opacity: 1; transform: scale(1); }
+
+  .tallo {
+    fill: none;
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-dasharray: 420;
+    stroke-dashoffset: 420;
+    transition: stroke-dashoffset 1.3s ease-in-out;
+  }
+  .tallo.on { stroke-dashoffset: 0; }
+
+  .hoja {
+    opacity: 0;
+    transform: scale(0.15);
+    transform-origin: 0 0;
+    transition: opacity 0.55s ease, transform 0.55s cubic-bezier(.34,1.56,.64,1);
+  }
+  .hoja.on { opacity: 1; transform: scale(1); }
+
+  .capullo {
+    opacity: 0;
+    transform: scale(0.1) translateY(6px);
+    transform-origin: 0 0;
+    transition: opacity 0.7s ease, transform 0.9s cubic-bezier(.34,1.56,.64,1);
+  }
+  .capullo.on {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+
+  .petalo-sombra { fill: var(--rosa-sombra); opacity: 0.5; }
+
+  .final {
+    font-size: 24px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 1s ease, transform 1s ease;
+    max-width: 520px;
+    position: relative;
+    z-index: 2;
+  }
+  .final.on { opacity: 1; transform: translateY(0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition-duration: 0.01ms !important; animation: none !important; }
+  }
+
+  @media (max-width: 520px) {
+    h1 { font-size: 42px; }
+  }
+</style>
 </head>
 <body>
-    <div class="contenedor">
-        <h1>Hola, mi vida 🦇🩸</h1>
-        <p>
-            Hice algo pequeño y con todo el corazón, para ti.
-        </p>
-        <button>
-            Dale clic aquí
-        </button>
-    </div>
-</body>
 
+  <div class="cielo" id="cielo"></div>
+
+  <div class="escena">
+
+    <div class="intro-grupo" id="introGrupo">
+      <h1>Hola, mi vida 🦇🩸</h1>
+      <p class="intro">Hice algo pequeño y con todo el corazón, para ti.</p>
+      <button id="botonInicio">Dale clic aquí</button>
+    </div>
+
+    <div class="jardin-wrap" id="jardinWrap">
+      <svg class="ramo" viewBox="0 0 300 380" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="gradPetalo" cx="35%" cy="20%" r="80%">
+            <stop offset="0%" stop-color="var(--rosa-claro)"/>
+            <stop offset="55%" stop-color="var(--rosa-medio)"/>
+            <stop offset="100%" stop-color="var(--rosa-fuerte)"/>
+          </radialGradient>
+          <linearGradient id="gradTallo" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0%" stop-color="var(--tallo-1)"/>
+            <stop offset="100%" stop-color="var(--tallo-2)"/>
+          </linearGradient>
+          <filter id="brillo" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="6" result="blur"/>
+            <feMerge>
+              <feMergeNode in="blur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+
+    
+        <g id="planta-izq">
+          <ellipse class="semilla" id="semilla-izq" cx="150" cy="360" rx="9" ry="7" fill="var(--semilla)"/>
+          <path class="tallo" id="tallo-izq" stroke="url(#gradTallo)"
+                d="M150,360 C136,320 100,270 88,220 C79,183 84,150 92,118" />
+          <g transform="translate(96,255) rotate(-135)"><ellipse class="hoja" id="hoja1-izq" cx="0" cy="0" rx="15" ry="9" fill="var(--tallo-2)"/></g>
+          <g transform="translate(84,205) rotate(-40)"><ellipse class="hoja" id="hoja2-izq" cx="0" cy="0" rx="15" ry="9" fill="var(--tallo-1)"/></g>
+          <g transform="translate(92,118) rotate(-18) scale(0.85)">
+            <g class="capullo" id="capullo-izq" filter="url(#brillo)">
+              <path class="petalo-sombra" d="M0,4 C-16,0 -22,-24 -10,-46 C-5,-54 5,-54 10,-46 C22,-24 16,0 0,4 Z"/>
+              <path d="M-6,2 C-20,-6 -24,-30 -14,-50 C-10,-57 -2,-56 -2,-48 C-6,-30 -8,-12 -6,2 Z" fill="url(#gradPetalo)"/>
+              <path d="M6,2 C20,-6 24,-30 14,-50 C10,-57 2,-56 2,-48 C6,-30 8,-12 6,2 Z" fill="url(#gradPetalo)"/>
+              <path d="M0,2 C-11,-6 -15,-34 -5,-56 C-2,-62 2,-62 5,-56 C15,-34 11,-6 0,2 Z" fill="url(#gradPetalo)"/>
+            </g>
+          </g>
+        </g>
+
+     
+        <g id="planta-der">
+          <ellipse class="semilla" id="semilla-der" cx="150" cy="360" rx="9" ry="7" fill="var(--semilla)"/>
+          <path class="tallo" id="tallo-der" stroke="url(#gradTallo)"
+                d="M150,360 C164,320 200,270 212,220 C221,183 216,150 208,128" />
+          <g transform="translate(204,255) rotate(135)"><ellipse class="hoja" id="hoja1-der" cx="0" cy="0" rx="15" ry="9" fill="var(--tallo-2)"/></g>
+          <g transform="translate(216,205) rotate(40)"><ellipse class="hoja" id="hoja2-der" cx="0" cy="0" rx="15" ry="9" fill="var(--tallo-1)"/></g>
+          <g transform="translate(208,128) rotate(18) scale(0.85)">
+            <g class="capullo" id="capullo-der" filter="url(#brillo)">
+              <path class="petalo-sombra" d="M0,4 C-16,0 -22,-24 -10,-46 C-5,-54 5,-54 10,-46 C22,-24 16,0 0,4 Z"/>
+              <path d="M-6,2 C-20,-6 -24,-30 -14,-50 C-10,-57 -2,-56 -2,-48 C-6,-30 -8,-12 -6,2 Z" fill="url(#gradPetalo)"/>
+              <path d="M6,2 C20,-6 24,-30 14,-50 C10,-57 2,-56 2,-48 C6,-30 8,-12 6,2 Z" fill="url(#gradPetalo)"/>
+              <path d="M0,2 C-11,-6 -15,-34 -5,-56 C-2,-62 2,-62 5,-56 C15,-34 11,-6 0,2 Z" fill="url(#gradPetalo)"/>
+            </g>
+          </g>
+        </g>
+
+        <g id="planta-centro">
+          <ellipse class="semilla" id="semilla-centro" cx="150" cy="360" rx="10" ry="8" fill="var(--semilla)"/>
+          <path class="tallo" id="tallo-centro" stroke="url(#gradTallo)"
+                d="M150,360 C150,300 150,220 150,160 C150,120 150,85 150,55" />
+          <g transform="translate(150,210) rotate(-160)"><ellipse class="hoja" id="hoja1-centro" cx="0" cy="0" rx="17" ry="10" fill="var(--tallo-1)"/></g>
+          <g transform="translate(150,165) rotate(-20)"><ellipse class="hoja" id="hoja2-centro" cx="0" cy="0" rx="17" ry="10" fill="var(--tallo-2)"/></g>
+          <g transform="translate(150,55) scale(1.05)">
+            <g class="capullo" id="capullo-centro" filter="url(#brillo)">
+              <path class="petalo-sombra" d="M0,4 C-18,0 -25,-27 -11,-52 C-6,-61 6,-61 11,-52 C25,-27 18,0 0,4 Z"/>
+              <path d="M-7,2 C-22,-7 -27,-34 -16,-56 C-11,-64 -2,-63 -2,-54 C-7,-34 -9,-13 -7,2 Z" fill="url(#gradPetalo)"/>
+              <path d="M7,2 C22,-7 27,-34 16,-56 C11,-64 2,-63 2,-54 C7,-34 9,-13 7,2 Z" fill="url(#gradPetalo)"/>
+              <path d="M0,2 C-12,-7 -17,-38 -6,-62 C-2,-70 2,-70 6,-62 C17,-38 12,-7 0,2 Z" fill="url(#gradPetalo)"/>
+            </g>
+          </g>
+        </g>
+      </svg>
+    </div>
+
+    <p class="final" id="mensajeFinal">
+      Así como estos tulipanes, quería que algo creciera despacio frente a tus ojos,
+      solo para ti, mi linda vampira. 🌷🦇
+    </p>
+  </div>
+
+<script>
+
+  const cielo = document.getElementById('cielo');
+  for (let i = 0; i < 55; i++) {
+    const e = document.createElement('div');
+    e.className = 'estrella';
+    const s = Math.random() * 2 + 1;
+    e.style.width = s + 'px';
+    e.style.height = s + 'px';
+    e.style.top = Math.random() * 100 + '%';
+    e.style.left = Math.random() * 100 + '%';
+    e.style.animationDelay = (Math.random() * 3) + 's';
+    cielo.appendChild(e);
+  }
+  for (let i = 0; i < 6; i++) {
+    const f = document.createElement('div');
+    f.className = 'luciernaga';
+    const s = Math.random() * 3 + 3;
+    f.style.width = s + 'px';
+    f.style.height = s + 'px';
+    f.style.top = (20 + Math.random() * 40) + '%';
+    f.style.left = (15 + Math.random() * 70) + '%';
+    f.style.animationDelay = (Math.random() * 4) + 's';
+    cielo.appendChild(f);
+  }
+
+  const esperar = (ms) => new Promise(r => setTimeout(r, ms));
+
+  async function crecerTulipan(sufijo, retrasoInicial) {
+    await esperar(retrasoInicial);
+    document.getElementById(`semilla-${sufijo}`).classList.add('on');
+    await esperar(600);
+    document.getElementById(`semilla-${sufijo}`).style.opacity = 0;
+    document.getElementById(`tallo-${sufijo}`).classList.add('on');
+    await esperar(1200);
+    document.getElementById(`hoja1-${sufijo}`).classList.add('on');
+    await esperar(450);
+    document.getElementById(`hoja2-${sufijo}`).classList.add('on');
+    await esperar(550);
+    document.getElementById(`capullo-${sufijo}`).classList.add('on');
+  }
+
+  document.getElementById('botonInicio').addEventListener('click', async () => {
+    document.getElementById('introGrupo').classList.add('oculto');
+    await esperar(700);
+    document.getElementById('jardinWrap').classList.add('visible');
+
+    await Promise.all([
+      crecerTulipan('centro', 0),
+      crecerTulipan('izq', 300),
+      crecerTulipan('der', 450)
+    ]);
+
+    await esperar(500);
+    document.getElementById('mensajeFinal').classList.add('on');
+  });
+</script>
+</body>
 </html>
