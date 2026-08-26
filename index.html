@@ -229,6 +229,21 @@
     overflow: visible;
   }
 
+  /* ESTILO DEL CONO DE LUZ */
+  .cono-luz {
+    opacity: 0;
+    transform-origin: 150px 0px;
+    transform: scaleY(0.2);
+    transition: opacity 1.5s ease-out, transform 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+    mix-blend-mode: screen;
+    filter: blur(5px);
+    pointer-events: none;
+  }
+  .cono-luz.on {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+
   .semilla {
     opacity: 0;
     transform: scale(0);
@@ -396,6 +411,14 @@
             <stop offset="0%" stop-color="var(--tallo-1)"/>
             <stop offset="100%" stop-color="var(--tallo-2)"/>
           </linearGradient>
+
+          <!-- Gradiente del Cono de Luz que hace florecer -->
+          <linearGradient id="gradCono" x1="0.5" y1="0" x2="0.5" y2="1">
+            <stop offset="0%" stop-color="#fff8e7" stop-opacity="0.9"/>
+            <stop offset="35%" stop-color="#fbcfe8" stop-opacity="0.5"/>
+            <stop offset="100%" stop-color="#f472b6" stop-opacity="0"/>
+          </linearGradient>
+
           <filter id="brillo" x="-60%" y="-60%" width="220%" height="220%">
             <feGaussianBlur stdDeviation="6" result="blur"/>
             <feMerge>
@@ -404,6 +427,9 @@
             </feMerge>
           </filter>
         </defs>
+
+        <!-- Cono de Luz enfocado hacia las flores/semillas -->
+        <polygon class="cono-luz" id="conoLuz" points="150,-20 15,380 285,380" fill="url(#gradCono)" />
 
         <g id="planta-izq">
           <ellipse class="semilla" id="semilla-izq" cx="150" cy="360" rx="9" ry="7" fill="var(--semilla)"/>
@@ -498,7 +524,7 @@
   async function crecerTulipan(sufijo, retrasoInicial) {
     await esperar(retrasoInicial);
     document.getElementById(`semilla-${sufijo}`).classList.add('on');
-    await esperar(600);
+    await esperar(500);
     document.getElementById(`semilla-${sufijo}`).style.opacity = 0;
     document.getElementById(`tallo-${sufijo}`).classList.add('on');
     await esperar(1200);
@@ -514,11 +540,18 @@
     await esperar(700);
     document.getElementById('jardinWrap').classList.add('visible');
 
-    await Promise.all([
+    // Inicia crecimiento de semillas
+    const crecimiento = Promise.all([
       crecerTulipan('centro', 0),
       crecerTulipan('izq', 300),
       crecerTulipan('der', 450)
     ]);
+
+    // JUSTO DESPUÉS de aparecer las semillas, se despliega el cono de luz
+    await esperar(400);
+    document.getElementById('conoLuz').classList.add('on');
+
+    await crecimiento;
 
     await esperar(500);
     document.getElementById('mensajeFinal').classList.add('on');
