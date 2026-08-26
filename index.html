@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --negro: #050308;
+    --negro: #030106;
     --blanco: #f5f0f2;
     --tallo-1: #2f5c3c;
     --tallo-2: #4c8a58;
@@ -25,7 +25,12 @@
   body {
     margin: 0;
     min-height: 100vh;
-    background: radial-gradient(ellipse at 50% 15%, #170c1f 0%, var(--negro) 65%);
+    background: 
+      radial-gradient(circle at 50% 20%, rgba(192, 38, 211, 0.35) 0%, transparent 45%),
+      radial-gradient(circle at 25% 70%, rgba(147, 51, 234, 0.25) 0%, transparent 40%),
+      radial-gradient(circle at 75% 65%, rgba(219, 39, 119, 0.2) 0%, transparent 45%),
+      radial-gradient(ellipse at 50% 25%, #2d0b3f 0%, #13051c 50%, var(--negro) 85%);
+    background-attachment: fixed;
     color: var(--blanco);
     display: flex;
     justify-content: center;
@@ -49,6 +54,41 @@
       transparent 7px
     );
     pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Canvas del Muro de Fuego */
+  #canvasFuego {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 52vh;
+    pointer-events: none;
+    z-index: 2;
+    mix-blend-mode: screen;
+  }
+
+  /* Elementos de fondo góticos */
+  .cruz-gotica {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1;
+    filter: drop-shadow(0 0 12px rgba(239, 68, 68, 0.6));
+    opacity: 0.75;
+  }
+
+  .corazon-sangre {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1;
+    filter: drop-shadow(0 0 10px rgba(225, 29, 72, 0.8));
+    animation: latido 2.8s infinite ease-in-out;
+  }
+
+  @keyframes latido {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.12); }
   }
 
   .cielo {
@@ -56,6 +96,7 @@
     inset: 0;
     pointer-events: none;
     overflow: hidden;
+    z-index: 1;
   }
   .estrella {
     position: absolute;
@@ -67,12 +108,12 @@
     position: absolute;
     background: #ffe9a8;
     border-radius: 50%;
-    box-shadow: 0 0 6px 2px rgba(255, 233, 168, 0.6);
+    box-shadow: 0 0 8px 3px rgba(230, 160, 255, 0.7);
     animation: flotar 6s ease-in-out infinite;
   }
   @keyframes parpadeo {
-    0%, 100% { opacity: 0.25; }
-    50% { opacity: 1; }
+    0%, 100% { opacity: 0.25; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.2); }
   }
   @keyframes flotar {
     0%, 100% { transform: translateY(0) translateX(0); opacity: 0.5; }
@@ -86,7 +127,7 @@
     gap: 22px;
     max-width: 640px;
     position: relative;
-    z-index: 2;
+    z-index: 3;
   }
 
   h1 {
@@ -94,31 +135,33 @@
     font-size: 56px;
     margin: 0;
     letter-spacing: 1px;
-    text-shadow: 0 0 18px rgba(230, 120, 160, 0.35);
+    text-shadow: 0 0 22px rgba(220, 100, 240, 0.6);
   }
 
   p.intro {
     font-size: 24px;
     margin: 0;
     color: #e7dde3;
+    text-shadow: 0 0 8px rgba(180, 80, 220, 0.4);
   }
 
   button {
     font-family: "UnifrakturCook", serif;
     font-size: 21px;
     padding: 12px 28px;
-    background-color: transparent;
+    background-color: rgba(5, 3, 8, 0.6);
     color: var(--blanco);
     border: 2px solid var(--blanco);
     border-radius: 8px;
     cursor: pointer;
     transition: 0.35s;
     letter-spacing: 1px;
+    backdrop-filter: blur(4px);
   }
   button:hover {
     background-color: var(--blanco);
     color: var(--negro);
-    box-shadow: 0 0 22px rgba(245, 240, 242, 0.5);
+    box-shadow: 0 0 25px rgba(210, 130, 255, 0.7);
   }
 
   .intro-grupo {
@@ -197,7 +240,8 @@
     transition: opacity 1s ease, transform 1s ease;
     max-width: 520px;
     position: relative;
-    z-index: 2;
+    z-index: 3;
+    text-shadow: 0 0 10px rgba(200, 100, 240, 0.5);
   }
   .final.on { opacity: 1; transform: translateY(0); }
 
@@ -212,7 +256,99 @@
 </head>
 <body>
 
+  <!-- Muro de Fuego Canvas -->
+  <canvas id="canvasFuego"></canvas>
+
   <div class="cielo" id="cielo"></div>
+
+  <!-- SVG Plantilla para Gradientes de Sangre -->
+  <svg style="display:none;">
+    <defs>
+      <linearGradient id="gradSangre" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#f43f5e"/>
+        <stop offset="40%" stop-color="#be123c"/>
+        <stop offset="100%" stop-color="#4c0519"/>
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <!-- 6 Cruces Góticas -->
+  <svg class="cruz-gotica" style="top: 4%; left: 3%; width: 110px;" viewBox="0 0 100 140">
+    <path d="M 45,5 L 50,0 L 55,5 L 55,35 L 75,35 L 80,30 L 85,35 L 85,45 L 80,50 L 75,45 L 55,45 L 55,95 L 70,110 L 50,130 L 30,110 L 45,95 L 45,45 L 25,45 L 20,50 L 15,45 L 15,35 L 20,30 L 25,35 L 45,35 Z" fill="#13041e" stroke="#ef4444" stroke-width="1.5"/>
+    <circle cx="50" cy="40" r="14" fill="none" stroke="#ef4444" stroke-width="1"/>
+  </svg>
+
+  <svg class="cruz-gotica" style="top: 6%; right: 4%; width: 150px; transform: rotate(5deg);" viewBox="0 0 100 140">
+    <path d="M 45,5 L 50,0 L 55,5 L 55,35 L 75,35 L 80,30 L 85,35 L 85,45 L 80,50 L 75,45 L 55,45 L 55,95 L 70,110 L 50,130 L 30,110 L 45,95 L 45,45 L 25,45 L 20,50 L 15,45 L 15,35 L 20,30 L 25,35 L 45,35 Z" fill="#13041e" stroke="#ef4444" stroke-width="1.5"/>
+    <circle cx="50" cy="40" r="14" fill="none" stroke="#ef4444" stroke-width="1"/>
+  </svg>
+
+  <svg class="cruz-gotica" style="top: 32%; left: 2%; width: 175px; transform: rotate(-8deg);" viewBox="0 0 100 140">
+    <path d="M 45,5 L 50,0 L 55,5 L 55,35 L 75,35 L 80,30 L 85,35 L 85,45 L 80,50 L 75,45 L 55,45 L 55,95 L 70,110 L 50,130 L 30,110 L 45,95 L 45,45 L 25,45 L 20,50 L 15,45 L 15,35 L 20,30 L 25,35 L 45,35 Z" fill="#13041e" stroke="#ef4444" stroke-width="1.5"/>
+    <circle cx="50" cy="40" r="14" fill="none" stroke="#ef4444" stroke-width="1"/>
+  </svg>
+
+  <svg class="cruz-gotica" style="top: 36%; right: 3%; width: 125px; transform: rotate(12deg);" viewBox="0 0 100 140">
+    <path d="M 45,5 L 50,0 L 55,5 L 55,35 L 75,35 L 80,30 L 85,35 L 85,45 L 80,50 L 75,45 L 55,45 L 55,95 L 70,110 L 50,130 L 30,110 L 45,95 L 45,45 L 25,45 L 20,50 L 15,45 L 15,35 L 20,30 L 25,35 L 45,35 Z" fill="#13041e" stroke="#ef4444" stroke-width="1.5"/>
+    <circle cx="50" cy="40" r="14" fill="none" stroke="#ef4444" stroke-width="1"/>
+  </svg>
+
+  <svg class="cruz-gotica" style="bottom: 12%; left: 8%; width: 140px; transform: rotate(-5deg);" viewBox="0 0 100 140">
+    <path d="M 45,5 L 50,0 L 55,5 L 55,35 L 75,35 L 80,30 L 85,35 L 85,45 L 80,50 L 75,45 L 55,45 L 55,95 L 70,110 L 50,130 L 30,110 L 45,95 L 45,45 L 25,45 L 20,50 L 15,45 L 15,35 L 20,30 L 25,35 L 45,35 Z" fill="#13041e" stroke="#ef4444" stroke-width="1.5"/>
+    <circle cx="50" cy="40" r="14" fill="none" stroke="#ef4444" stroke-width="1"/>
+  </svg>
+
+  <svg class="cruz-gotica" style="bottom: 14%; right: 7%; width: 95px; transform: rotate(6deg);" viewBox="0 0 100 140">
+    <path d="M 45,5 L 50,0 L 55,5 L 55,35 L 75,35 L 80,30 L 85,35 L 85,45 L 80,50 L 75,45 L 55,45 L 55,95 L 70,110 L 50,130 L 30,110 L 45,95 L 45,45 L 25,45 L 20,50 L 15,45 L 15,35 L 20,30 L 25,35 L 45,35 Z" fill="#13041e" stroke="#ef4444" stroke-width="1.5"/>
+    <circle cx="50" cy="40" r="14" fill="none" stroke="#ef4444" stroke-width="1"/>
+  </svg>
+
+  <!-- 8 Corazones Sangrantes -->
+  <svg class="corazon-sangre" style="top: 12%; left: 18%; width: 42px;" viewBox="0 0 50 70">
+    <path d="M 25 38 C 25 38 5 24 5 13 C 5 6.5 10 2 16.5 2 C 20.3 2 23.6 4.1 25 7.2 C 26.4 4.1 29.7 2 33.5 2 C 40 2 45 6.5 45 13 C 45 24 25 38 25 38 Z" fill="url(#gradSangre)"/>
+    <path d="M 12 32 Q 11 44 10 50 Q 10 53 12 53 Q 14 53 13 48 Z" fill="#e11d48"/>
+    <path d="M 25 37 Q 24 52 23 62 Q 23 66 25.5 66 Q 28 66 27 60 Z" fill="#9f1239"/>
+    <path d="M 37 30 Q 38 42 39 47 Q 39 50 37.5 50 Q 36 50 36 45 Z" fill="#e11d48"/>
+  </svg>
+
+  <svg class="corazon-sangre" style="top: 16%; right: 16%; width: 52px; animation-delay: 0.4s;" viewBox="0 0 50 70">
+    <path d="M 25 38 C 25 38 5 24 5 13 C 5 6.5 10 2 16.5 2 C 20.3 2 23.6 4.1 25 7.2 C 26.4 4.1 29.7 2 33.5 2 C 40 2 45 6.5 45 13 C 45 24 25 38 25 38 Z" fill="url(#gradSangre)"/>
+    <path d="M 12 32 Q 11 44 10 50 Q 10 53 12 53 Q 14 53 13 48 Z" fill="#e11d48"/>
+    <path d="M 25 37 Q 24 52 23 62 Q 23 66 25.5 66 Q 28 66 27 60 Z" fill="#9f1239"/>
+  </svg>
+
+  <svg class="corazon-sangre" style="top: 48%; left: 12%; width: 48px; animation-delay: 0.8s;" viewBox="0 0 50 70">
+    <path d="M 25 38 C 25 38 5 24 5 13 C 5 6.5 10 2 16.5 2 C 20.3 2 23.6 4.1 25 7.2 C 26.4 4.1 29.7 2 33.5 2 C 40 2 45 6.5 45 13 C 45 24 25 38 25 38 Z" fill="url(#gradSangre)"/>
+    <path d="M 25 37 Q 24 52 23 62 Q 23 66 25.5 66 Q 28 66 27 60 Z" fill="#9f1239"/>
+    <path d="M 37 30 Q 38 42 39 47 Q 39 50 37.5 50 Q 36 50 36 45 Z" fill="#e11d48"/>
+  </svg>
+
+  <svg class="corazon-sangre" style="top: 52%; right: 14%; width: 45px; animation-delay: 1.2s;" viewBox="0 0 50 70">
+    <path d="M 25 38 C 25 38 5 24 5 13 C 5 6.5 10 2 16.5 2 C 20.3 2 23.6 4.1 25 7.2 C 26.4 4.1 29.7 2 33.5 2 C 40 2 45 6.5 45 13 C 45 24 25 38 25 38 Z" fill="url(#gradSangre)"/>
+    <path d="M 12 32 Q 11 44 10 50 Q 10 53 12 53 Q 14 53 13 48 Z" fill="#e11d48"/>
+    <path d="M 25 37 Q 24 52 23 62 Q 23 66 25.5 66 Q 28 66 27 60 Z" fill="#9f1239"/>
+  </svg>
+
+  <svg class="corazon-sangre" style="top: 8%; left: 46%; width: 38px; animation-delay: 0.6s;" viewBox="0 0 50 70">
+    <path d="M 25 38 C 25 38 5 24 5 13 C 5 6.5 10 2 16.5 2 C 20.3 2 23.6 4.1 25 7.2 C 26.4 4.1 29.7 2 33.5 2 C 40 2 45 6.5 45 13 C 45 24 25 38 25 38 Z" fill="url(#gradSangre)"/>
+    <path d="M 25 37 Q 24 52 23 62 Q 23 66 25.5 66 Q 28 66 27 60 Z" fill="#9f1239"/>
+  </svg>
+
+  <svg class="corazon-sangre" style="top: 28%; right: 30%; width: 50px; animation-delay: 1.5s;" viewBox="0 0 50 70">
+    <path d="M 25 38 C 25 38 5 24 5 13 C 5 6.5 10 2 16.5 2 C 20.3 2 23.6 4.1 25 7.2 C 26.4 4.1 29.7 2 33.5 2 C 40 2 45 6.5 45 13 C 45 24 25 38 25 38 Z" fill="url(#gradSangre)"/>
+    <path d="M 12 32 Q 11 44 10 50 Q 10 53 12 53 Q 14 53 13 48 Z" fill="#e11d48"/>
+    <path d="M 37 30 Q 38 42 39 47 Q 39 50 37.5 50 Q 36 50 36 45 Z" fill="#e11d48"/>
+  </svg>
+
+  <svg class="corazon-sangre" style="bottom: 25%; left: 22%; width: 46px; animation-delay: 1s;" viewBox="0 0 50 70">
+    <path d="M 25 38 C 25 38 5 24 5 13 C 5 6.5 10 2 16.5 2 C 20.3 2 23.6 4.1 25 7.2 C 26.4 4.1 29.7 2 33.5 2 C 40 2 45 6.5 45 13 C 45 24 25 38 25 38 Z" fill="url(#gradSangre)"/>
+    <path d="M 25 37 Q 24 52 23 62 Q 23 66 25.5 66 Q 28 66 27 60 Z" fill="#9f1239"/>
+  </svg>
+
+  <svg class="corazon-sangre" style="bottom: 28%; right: 24%; width: 40px; animation-delay: 0.2s;" viewBox="0 0 50 70">
+    <path d="M 25 38 C 25 38 5 24 5 13 C 5 6.5 10 2 16.5 2 C 20.3 2 23.6 4.1 25 7.2 C 26.4 4.1 29.7 2 33.5 2 C 40 2 45 6.5 45 13 C 45 24 25 38 25 38 Z" fill="url(#gradSangre)"/>
+    <path d="M 12 32 Q 11 44 10 50 Q 10 53 12 53 Q 14 53 13 48 Z" fill="#e11d48"/>
+  </svg>
 
   <div class="escena">
 
@@ -300,11 +436,12 @@
   </div>
 
 <script>
+  // --- Generador de Estrellas y Luciérnagas ---
   const cielo = document.getElementById('cielo');
-  for (let i = 0; i < 55; i++) {
+  for (let i = 0; i < 65; i++) {
     const e = document.createElement('div');
     e.className = 'estrella';
-    const s = Math.random() * 2 + 1;
+    const s = Math.random() * 2.5 + 1;
     e.style.width = s + 'px';
     e.style.height = s + 'px';
     e.style.top = Math.random() * 100 + '%';
@@ -312,18 +449,83 @@
     e.style.animationDelay = (Math.random() * 3) + 's';
     cielo.appendChild(e);
   }
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < 7; i++) {
     const f = document.createElement('div');
     f.className = 'luciernaga';
-    const s = Math.random() * 3 + 3;
+    const s = Math.random() * 3.5 + 3;
     f.style.width = s + 'px';
     f.style.height = s + 'px';
-    f.style.top = (20 + Math.random() * 40) + '%';
+    f.style.top = (20 + Math.random() * 50) + '%';
     f.style.left = (15 + Math.random() * 70) + '%';
     f.style.animationDelay = (Math.random() * 4) + 's';
     cielo.appendChild(f);
   }
 
+  // --- Muro de Fuego Vivo (Canvas) ---
+  const canvasFuego = document.getElementById('canvasFuego');
+  const ctxFuego = canvasFuego.getContext('2d');
+  let width, height;
+
+  function resizeFuego() {
+    width = canvasFuego.width = window.innerWidth;
+    height = canvasFuego.height = window.innerHeight * 0.52;
+  }
+  window.addEventListener('resize', resizeFuego);
+  resizeFuego();
+
+  class Llama {
+    constructor() {
+      this.reset();
+    }
+    reset() {
+      this.x = Math.random() * width;
+      this.y = height + Math.random() * 20;
+      this.vx = (Math.random() - 0.5) * 1.8;
+      this.vy = -(Math.random() * 3.5 + 2.2);
+      this.size = Math.random() * 28 + 16;
+      this.life = Math.random() * 0.6 + 0.4;
+      this.maxLife = this.life;
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      this.life -= 0.014;
+      this.size *= 0.958;
+      if (this.life <= 0 || this.size < 2) {
+        this.reset();
+      }
+    }
+    draw() {
+      const ratio = this.life / this.maxLife;
+      ctxFuego.save();
+      ctxFuego.globalCompositeOperation = 'lighter';
+      const grad = ctxFuego.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
+      grad.addColorStop(0, `rgba(255, 235, 140, ${ratio * 0.9})`);
+      grad.addColorStop(0.25, `rgba(255, 110, 20, ${ratio * 0.75})`);
+      grad.addColorStop(0.65, `rgba(220, 20, 60, ${ratio * 0.35})`);
+      grad.addColorStop(1, `rgba(80, 0, 40, 0)`);
+      
+      ctxFuego.fillStyle = grad;
+      ctxFuego.beginPath();
+      ctxFuego.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctxFuego.fill();
+      ctxFuego.restore();
+    }
+  }
+
+  const particulasFuego = Array.from({ length: 260 }, () => new Llama());
+
+  function animarFuego() {
+    ctxFuego.clearRect(0, 0, width, height);
+    particulasFuego.forEach(p => {
+      p.update();
+      p.draw();
+    });
+    requestAnimationFrame(animarFuego);
+  }
+  animarFuego();
+
+  // --- Lógica de la Animación de los Tulipanes ---
   const esperar = (ms) => new Promise(r => setTimeout(r, ms));
 
   async function crecerTulipan(sufijo, retrasoInicial) {
