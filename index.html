@@ -27,7 +27,7 @@
 
   body {
     margin: 0;
-    min-height: 100dvh; /* Adaptado para navegadores móviles */
+    min-height: 100dvh;
     background-color: var(--negro);
     background-image: 
       radial-gradient(circle at 50% 30%, rgba(45, 15, 55, 0.5) 0%, transparent 70%),
@@ -87,7 +87,7 @@
     100% { opacity: 1; filter: blur(14px); }
   }
 
-  /* Cruces Góticas - Escalas optimizadas para pantalla vertical */
+  /* Cruces Góticas */
   .cruz-gotica {
     position: fixed;
     pointer-events: none;
@@ -96,7 +96,7 @@
     opacity: 0.8;
   }
 
-  /* Corazones Sangrantes - Tamaño adaptativo */
+  /* Corazones Sangrantes */
   .corazon-sangre {
     position: fixed;
     pointer-events: none;
@@ -152,7 +152,7 @@
     }
   }
 
-  /* Contenedor Principal Ajustado a 9:16 */
+  /* Contenedor Principal */
   .escena {
     display: flex;
     flex-direction: column;
@@ -166,9 +166,31 @@
     z-index: 10;
   }
 
+  /* CENTRADO PERFECTO PARA EL TEXTO DE BIENVENIDA Y BOTÓN */
+  .intro-grupo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    z-index: 20;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .intro-grupo.oculto {
+    opacity: 0;
+    transform: translate(-50%, -65%) scale(0.95);
+    pointer-events: none;
+  }
+
   h1 {
     font-family: "UnifrakturCook", serif;
-    font-size: clamp(38px, 9vw, 50px);
+    font-size: clamp(36px, 9vw, 48px);
     margin: 0;
     letter-spacing: 1px;
     line-height: 1.1;
@@ -203,20 +225,6 @@
     box-shadow: 0 0 25px rgba(210, 130, 255, 0.9);
   }
 
-  .intro-grupo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 18px;
-    transition: opacity 0.8s ease, transform 0.8s ease;
-  }
-  .intro-grupo.oculto {
-    opacity: 0;
-    transform: translateY(-16px) scale(0.96);
-    pointer-events: none;
-    position: absolute;
-  }
-
   .jardin-wrap {
     opacity: 0;
     transform: translateY(14px);
@@ -232,7 +240,7 @@
 
   .ramo {
     width: min(72vw, 280px);
-    max-height: 48dvh;
+    max-height: 42dvh;
     height: auto;
     overflow: visible;
   }
@@ -317,7 +325,7 @@
 
   <div class="cielo" id="cielo"></div>
 
-  <!-- 6 CRUCES GÓTICAS (Posicionadas para marcos de pantalla 9:16) -->
+  <!-- CRUCES GÓTICAS -->
   <svg class="cruz-gotica" style="top: 2%; left: 3%; width: 75px;" viewBox="0 0 100 140">
     <path d="M 45,5 L 50,0 L 55,5 L 55,35 L 75,35 L 80,30 L 85,35 L 85,45 L 80,50 L 75,45 L 55,45 L 55,95 L 70,110 L 50,130 L 30,110 L 45,95 L 45,45 L 25,45 L 20,50 L 15,45 L 15,35 L 20,30 L 25,35 L 45,35 Z" fill="#0f0318" stroke="#f87171" stroke-width="2"/>
     <circle cx="50" cy="40" r="14" fill="none" stroke="#ef4444" stroke-width="1.5"/>
@@ -348,7 +356,7 @@
     <circle cx="50" cy="40" r="14" fill="none" stroke="#ef4444" stroke-width="1.5"/>
   </svg>
 
-  <!-- 8 CORAZONES CHORREANDO SANGRE -->
+  <!-- CORAZONES SANGRANTES -->
   <svg class="corazon-sangre" style="top: 10%; left: 12%; width: 36px;" viewBox="0 0 50 75">
     <path d="M 25 38 C 25 38 5 24 5 13 C 5 6.5 10 2 16.5 2 C 20.3 2 23.6 4.1 25 7.2 C 26.4 4.1 29.7 2 33.5 2 C 40 2 45 6.5 45 13 C 45 24 25 38 25 38 Z" fill="#e11d48"/>
     <path d="M 12 32 Q 11 46 10 52 Q 10 56 13 56 Q 15 56 14 50 Z" fill="#9f1239"/>
@@ -393,12 +401,14 @@
   <!-- Escena Principal -->
   <div class="escena">
 
+    <!-- Mensaje de Bienvenida y Botón Centrados -->
     <div class="intro-grupo" id="introGrupo">
       <h1>Hola, mi vida 🦇🩸</h1>
       <p class="intro">Hice algo pequeño y con todo el corazón, para ti.</p>
       <button id="botonInicio">Dale clic aquí</button>
     </div>
 
+    <!-- Ramo y Flores -->
     <div class="jardin-wrap" id="jardinWrap">
       <svg class="ramo" viewBox="0 0 300 380" xmlns="http://www.w3.org/2000/svg">
         <defs>
@@ -489,7 +499,6 @@
 <script>
   const cielo = document.getElementById('cielo');
 
-  // Puntitos parpadeando (Estrellas)
   for (let i = 0; i < 55; i++) {
     const e = document.createElement('div');
     e.className = 'estrella';
@@ -502,7 +511,6 @@
     cielo.appendChild(e);
   }
 
-  // Polvo flotante iluminado
   for (let i = 0; i < 35; i++) {
     const polvo = document.createElement('div');
     polvo.className = 'mota-polvo';
