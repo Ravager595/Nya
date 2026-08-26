@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Para ti, mi linda vampira 🦇🩸</title>
 <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500&display=swap" rel="stylesheet">
 <style>
@@ -20,11 +20,14 @@
 
   * { box-sizing: border-box; }
 
-  html, body { height: 100%; }
+  html, body { 
+    height: 100%; 
+    width: 100%;
+  }
 
   body {
     margin: 0;
-    min-height: 100vh;
+    min-height: 100dvh; /* Adaptado para navegadores móviles */
     background-color: var(--negro);
     background-image: 
       radial-gradient(circle at 50% 30%, rgba(45, 15, 55, 0.5) 0%, transparent 70%),
@@ -37,7 +40,7 @@
     text-align: center;
     font-family: "Cormorant Garamond", serif;
     overflow: hidden;
-    padding: 24px;
+    padding: 16px;
     position: relative;
   }
 
@@ -61,9 +64,9 @@
   .luz-ventana {
     position: fixed;
     top: -20%;
-    left: -10%;
-    width: 75vw;
-    height: 140vh;
+    left: -20%;
+    width: 100vw;
+    height: 140dvh;
     background: linear-gradient(
       115deg,
       rgba(255, 235, 210, 0.22) 0%,
@@ -84,27 +87,27 @@
     100% { opacity: 1; filter: blur(14px); }
   }
 
-  /* 6 Cruces Góticas */
+  /* Cruces Góticas - Escalas optimizadas para pantalla vertical */
   .cruz-gotica {
     position: fixed;
     pointer-events: none;
     z-index: 4;
-    filter: drop-shadow(0 0 14px rgba(220, 38, 38, 0.8));
-    opacity: 0.85;
+    filter: drop-shadow(0 0 10px rgba(220, 38, 38, 0.8));
+    opacity: 0.8;
   }
 
-  /* 8 Corazones Sangrantes */
+  /* Corazones Sangrantes - Tamaño adaptativo */
   .corazon-sangre {
     position: fixed;
     pointer-events: none;
     z-index: 5;
-    filter: drop-shadow(0 0 12px #ff0033);
+    filter: drop-shadow(0 0 10px #ff0033);
     animation: latido 2.4s infinite ease-in-out;
   }
 
   @keyframes latido {
     0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.15); }
+    50% { transform: scale(1.12); }
   }
 
   .cielo {
@@ -115,7 +118,6 @@
     z-index: 3;
   }
 
-  /* Puntitos parpadeando */
   .estrella {
     position: absolute;
     background: #ffffff;
@@ -128,7 +130,6 @@
     50% { opacity: 0.9; transform: scale(1.3); }
   }
 
-  /* Polvo flotante iluminado */
   .mota-polvo {
     position: absolute;
     background: rgba(255, 245, 225, 0.85);
@@ -143,48 +144,50 @@
       transform: translateY(0) translateX(0) scale(0.8);
       opacity: 0;
     }
-    20% {
-      opacity: 0.9;
-    }
-    80% {
-      opacity: 0.8;
-    }
+    20% { opacity: 0.9; }
+    80% { opacity: 0.8; }
     100% {
       transform: translateY(-110px) translateX(35px) scale(1.2);
       opacity: 0;
     }
   }
 
+  /* Contenedor Principal Ajustado a 9:16 */
   .escena {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 22px;
-    max-width: 640px;
+    justify-content: center;
+    gap: 16px;
+    width: 100%;
+    max-width: 420px;
+    height: 100dvh;
     position: relative;
     z-index: 10;
   }
 
   h1 {
     font-family: "UnifrakturCook", serif;
-    font-size: 56px;
+    font-size: clamp(38px, 9vw, 50px);
     margin: 0;
     letter-spacing: 1px;
-    text-shadow: 0 0 22px rgba(220, 100, 240, 0.8);
+    line-height: 1.1;
+    text-shadow: 0 0 18px rgba(220, 100, 240, 0.8);
   }
 
   p.intro {
-    font-size: 24px;
+    font-size: clamp(18px, 4.8vw, 22px);
     margin: 0;
     color: #e7dde3;
+    padding: 0 10px;
     text-shadow: 0 0 8px rgba(180, 80, 220, 0.6);
   }
 
   button {
     font-family: "UnifrakturCook", serif;
-    font-size: 21px;
-    padding: 12px 28px;
-    background-color: rgba(5, 3, 8, 0.8);
+    font-size: 20px;
+    padding: 12px 32px;
+    background-color: rgba(5, 3, 8, 0.85);
     color: var(--blanco);
     border: 2px solid var(--blanco);
     border-radius: 8px;
@@ -192,8 +195,9 @@
     transition: 0.35s;
     letter-spacing: 1px;
     backdrop-filter: blur(6px);
+    -webkit-tap-highlight-color: transparent;
   }
-  button:hover {
+  button:active, button:hover {
     background-color: var(--blanco);
     color: var(--negro);
     box-shadow: 0 0 25px rgba(210, 130, 255, 0.9);
@@ -203,8 +207,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
-    transition: opacity 0.9s ease, transform 0.9s ease;
+    gap: 18px;
+    transition: opacity 0.8s ease, transform 0.8s ease;
   }
   .intro-grupo.oculto {
     opacity: 0;
@@ -217,6 +221,9 @@
     opacity: 0;
     transform: translateY(14px);
     transition: opacity 0.8s ease, transform 0.8s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .jardin-wrap.visible {
     opacity: 1;
@@ -224,19 +231,19 @@
   }
 
   .ramo {
-    width: min(78vw, 320px);
+    width: min(72vw, 280px);
+    max-height: 48dvh;
     height: auto;
     overflow: visible;
   }
 
-  /* ESTILO DEL CONO DE LUZ */
   .cono-luz {
     opacity: 0;
     transform-origin: 150px 0px;
     transform: scaleY(0.2);
     transition: opacity 1.5s ease-out, transform 1.8s cubic-bezier(0.16, 1, 0.3, 1);
     mix-blend-mode: screen;
-    filter: blur(5px);
+    filter: blur(4px);
     pointer-events: none;
   }
   .cono-luz.on {
@@ -284,11 +291,14 @@
   .petalo-sombra { fill: var(--rosa-sombra); opacity: 0.5; }
 
   .final {
-    font-size: 24px;
+    font-size: clamp(18px, 4.5vw, 21px);
+    line-height: 1.35;
+    margin: 0;
+    padding: 0 12px;
     opacity: 0;
     transform: translateY(10px);
     transition: opacity 1s ease, transform 1s ease;
-    max-width: 520px;
+    max-width: 360px;
     position: relative;
     z-index: 10;
     text-shadow: 0 0 10px rgba(200, 100, 240, 0.7);
@@ -297,10 +307,6 @@
 
   @media (prefers-reduced-motion: reduce) {
     * { transition-duration: 0.01ms !important; animation: none !important; }
-  }
-
-  @media (max-width: 520px) {
-    h1 { font-size: 42px; }
   }
 </style>
 </head>
@@ -311,81 +317,75 @@
 
   <div class="cielo" id="cielo"></div>
 
-  <!-- 6 CRUCES GÓTICAS -->
-  <svg class="cruz-gotica" style="top: 3%; left: 2%; width: 110px;" viewBox="0 0 100 140">
+  <!-- 6 CRUCES GÓTICAS (Posicionadas para marcos de pantalla 9:16) -->
+  <svg class="cruz-gotica" style="top: 2%; left: 3%; width: 75px;" viewBox="0 0 100 140">
     <path d="M 45,5 L 50,0 L 55,5 L 55,35 L 75,35 L 80,30 L 85,35 L 85,45 L 80,50 L 75,45 L 55,45 L 55,95 L 70,110 L 50,130 L 30,110 L 45,95 L 45,45 L 25,45 L 20,50 L 15,45 L 15,35 L 20,30 L 25,35 L 45,35 Z" fill="#0f0318" stroke="#f87171" stroke-width="2"/>
     <circle cx="50" cy="40" r="14" fill="none" stroke="#ef4444" stroke-width="1.5"/>
   </svg>
 
-  <svg class="cruz-gotica" style="top: 5%; right: 3%; width: 145px; transform: rotate(6deg);" viewBox="0 0 100 140">
+  <svg class="cruz-gotica" style="top: 3%; right: 3%; width: 85px; transform: rotate(6deg);" viewBox="0 0 100 140">
     <path d="M 45,5 L 50,0 L 55,5 L 55,35 L 75,35 L 80,30 L 85,35 L 85,45 L 80,50 L 75,45 L 55,45 L 55,95 L 70,110 L 50,130 L 30,110 L 45,95 L 45,45 L 25,45 L 20,50 L 15,45 L 15,35 L 20,30 L 25,35 L 45,35 Z" fill="#0f0318" stroke="#f87171" stroke-width="2"/>
     <circle cx="50" cy="40" r="14" fill="none" stroke="#ef4444" stroke-width="1.5"/>
   </svg>
 
-  <svg class="cruz-gotica" style="top: 30%; left: 1%; width: 165px; transform: rotate(-7deg);" viewBox="0 0 100 140">
+  <svg class="cruz-gotica" style="top: 38%; left: -2%; width: 95px; transform: rotate(-7deg);" viewBox="0 0 100 140">
     <path d="M 45,5 L 50,0 L 55,5 L 55,35 L 75,35 L 80,30 L 85,35 L 85,45 L 80,50 L 75,45 L 55,45 L 55,95 L 70,110 L 50,130 L 30,110 L 45,95 L 45,45 L 25,45 L 20,50 L 15,45 L 15,35 L 20,30 L 25,35 L 45,35 Z" fill="#0f0318" stroke="#f87171" stroke-width="2"/>
     <circle cx="50" cy="40" r="14" fill="none" stroke="#ef4444" stroke-width="1.5"/>
   </svg>
 
-  <svg class="cruz-gotica" style="top: 34%; right: 2%; width: 130px; transform: rotate(10deg);" viewBox="0 0 100 140">
+  <svg class="cruz-gotica" style="top: 40%; right: -2%; width: 80px; transform: rotate(10deg);" viewBox="0 0 100 140">
     <path d="M 45,5 L 50,0 L 55,5 L 55,35 L 75,35 L 80,30 L 85,35 L 85,45 L 80,50 L 75,45 L 55,45 L 55,95 L 70,110 L 50,130 L 30,110 L 45,95 L 45,45 L 25,45 L 20,50 L 15,45 L 15,35 L 20,30 L 25,35 L 45,35 Z" fill="#0f0318" stroke="#f87171" stroke-width="2"/>
     <circle cx="50" cy="40" r="14" fill="none" stroke="#ef4444" stroke-width="1.5"/>
   </svg>
 
-  <svg class="cruz-gotica" style="bottom: 15%; left: 5%; width: 140px; transform: rotate(-4deg);" viewBox="0 0 100 140">
+  <svg class="cruz-gotica" style="bottom: 4%; left: 2%; width: 85px; transform: rotate(-4deg);" viewBox="0 0 100 140">
     <path d="M 45,5 L 50,0 L 55,5 L 55,35 L 75,35 L 80,30 L 85,35 L 85,45 L 80,50 L 75,45 L 55,45 L 55,95 L 70,110 L 50,130 L 30,110 L 45,95 L 45,45 L 25,45 L 20,50 L 15,45 L 15,35 L 20,30 L 25,35 L 45,35 Z" fill="#0f0318" stroke="#f87171" stroke-width="2"/>
     <circle cx="50" cy="40" r="14" fill="none" stroke="#ef4444" stroke-width="1.5"/>
   </svg>
 
-  <svg class="cruz-gotica" style="bottom: 16%; right: 4%; width: 100px; transform: rotate(8deg);" viewBox="0 0 100 140">
+  <svg class="cruz-gotica" style="bottom: 5%; right: 2%; width: 75px; transform: rotate(8deg);" viewBox="0 0 100 140">
     <path d="M 45,5 L 50,0 L 55,5 L 55,35 L 75,35 L 80,30 L 85,35 L 85,45 L 80,50 L 75,45 L 55,45 L 55,95 L 70,110 L 50,130 L 30,110 L 45,95 L 45,45 L 25,45 L 20,50 L 15,45 L 15,35 L 20,30 L 25,35 L 45,35 Z" fill="#0f0318" stroke="#f87171" stroke-width="2"/>
     <circle cx="50" cy="40" r="14" fill="none" stroke="#ef4444" stroke-width="1.5"/>
   </svg>
 
   <!-- 8 CORAZONES CHORREANDO SANGRE -->
-  <svg class="corazon-sangre" style="top: 8%; left: 16%; width: 55px;" viewBox="0 0 50 75">
+  <svg class="corazon-sangre" style="top: 10%; left: 12%; width: 36px;" viewBox="0 0 50 75">
     <path d="M 25 38 C 25 38 5 24 5 13 C 5 6.5 10 2 16.5 2 C 20.3 2 23.6 4.1 25 7.2 C 26.4 4.1 29.7 2 33.5 2 C 40 2 45 6.5 45 13 C 45 24 25 38 25 38 Z" fill="#e11d48"/>
     <path d="M 12 32 Q 11 46 10 52 Q 10 56 13 56 Q 15 56 14 50 Z" fill="#9f1239"/>
     <path d="M 25 37 Q 24 55 23 66 Q 23 72 26 72 Q 28 72 27 63 Z" fill="#881337"/>
-    <path d="M 37 30 Q 38 45 39 51 Q 39 55 37 55 Q 35 55 35 48 Z" fill="#9f1239"/>
   </svg>
 
-  <svg class="corazon-sangre" style="top: 6%; right: 22%; width: 48px; animation-delay: 0.3s;" viewBox="0 0 50 75">
+  <svg class="corazon-sangre" style="top: 8%; right: 14%; width: 34px; animation-delay: 0.3s;" viewBox="0 0 50 75">
     <path d="M 25 38 C 25 38 5 24 5 13 C 5 6.5 10 2 16.5 2 C 20.3 2 23.6 4.1 25 7.2 C 26.4 4.1 29.7 2 33.5 2 C 40 2 45 6.5 45 13 C 45 24 25 38 25 38 Z" fill="#ef4444"/>
     <path d="M 25 37 Q 24 55 23 66 Q 23 72 26 72 Q 28 72 27 63 Z" fill="#9f1239"/>
-    <path d="M 14 32 Q 13 45 12 52 Q 12 55 14 55 Q 16 55 15 48 Z" fill="#881337"/>
   </svg>
 
-  <svg class="corazon-sangre" style="top: 4%; left: 47%; width: 42px; animation-delay: 0.7s;" viewBox="0 0 50 75">
+  <svg class="corazon-sangre" style="top: 3%; left: 45%; width: 32px; animation-delay: 0.7s;" viewBox="0 0 50 75">
     <path d="M 25 38 C 25 38 5 24 5 13 C 5 6.5 10 2 16.5 2 C 20.3 2 23.6 4.1 25 7.2 C 26.4 4.1 29.7 2 33.5 2 C 40 2 45 6.5 45 13 C 45 24 25 38 25 38 Z" fill="#e11d48"/>
     <path d="M 25 37 Q 24 55 23 66 Q 23 72 26 72 Q 28 72 27 63 Z" fill="#881337"/>
   </svg>
 
-  <svg class="corazon-sangre" style="top: 25%; left: 14%; width: 50px; animation-delay: 1.1s;" viewBox="0 0 50 75">
+  <svg class="corazon-sangre" style="top: 24%; left: 6%; width: 35px; animation-delay: 1.1s;" viewBox="0 0 50 75">
     <path d="M 25 38 C 25 38 5 24 5 13 C 5 6.5 10 2 16.5 2 C 20.3 2 23.6 4.1 25 7.2 C 26.4 4.1 29.7 2 33.5 2 C 40 2 45 6.5 45 13 C 45 24 25 38 25 38 Z" fill="#dc2626"/>
-    <path d="M 12 32 Q 11 46 10 52 Q 10 56 13 56 Q 15 56 14 50 Z" fill="#881337"/>
     <path d="M 25 37 Q 24 55 23 66 Q 23 72 26 72 Q 28 72 27 63 Z" fill="#9f1239"/>
   </svg>
 
-  <svg class="corazon-sangre" style="top: 28%; right: 15%; width: 54px; animation-delay: 0.5s;" viewBox="0 0 50 75">
+  <svg class="corazon-sangre" style="top: 26%; right: 7%; width: 38px; animation-delay: 0.5s;" viewBox="0 0 50 75">
     <path d="M 25 38 C 25 38 5 24 5 13 C 5 6.5 10 2 16.5 2 C 20.3 2 23.6 4.1 25 7.2 C 26.4 4.1 29.7 2 33.5 2 C 40 2 45 6.5 45 13 C 45 24 25 38 25 38 Z" fill="#e11d48"/>
     <path d="M 25 37 Q 24 55 23 66 Q 23 72 26 72 Q 28 72 27 63 Z" fill="#881337"/>
-    <path d="M 37 30 Q 38 45 39 51 Q 39 55 37 55 Q 35 55 35 48 Z" fill="#9f1239"/>
   </svg>
 
-  <svg class="corazon-sangre" style="top: 52%; left: 10%; width: 46px; animation-delay: 1.4s;" viewBox="0 0 50 75">
+  <svg class="corazon-sangre" style="bottom: 22%; left: 5%; width: 32px; animation-delay: 1.4s;" viewBox="0 0 50 75">
     <path d="M 25 38 C 25 38 5 24 5 13 C 5 6.5 10 2 16.5 2 C 20.3 2 23.6 4.1 25 7.2 C 26.4 4.1 29.7 2 33.5 2 C 40 2 45 6.5 45 13 C 45 24 25 38 25 38 Z" fill="#ef4444"/>
-    <path d="M 12 32 Q 11 46 10 52 Q 10 56 13 56 Q 15 56 14 50 Z" fill="#9f1239"/>
     <path d="M 25 37 Q 24 55 23 66 Q 23 72 26 72 Q 28 72 27 63 Z" fill="#881337"/>
   </svg>
 
-  <svg class="corazon-sangre" style="top: 55%; right: 10%; width: 48px; animation-delay: 0.9s;" viewBox="0 0 50 75">
+  <svg class="corazon-sangre" style="bottom: 24%; right: 5%; width: 35px; animation-delay: 0.9s;" viewBox="0 0 50 75">
     <path d="M 25 38 C 25 38 5 24 5 13 C 5 6.5 10 2 16.5 2 C 20.3 2 23.6 4.1 25 7.2 C 26.4 4.1 29.7 2 33.5 2 C 40 2 45 6.5 45 13 C 45 24 25 38 25 38 Z" fill="#dc2626"/>
     <path d="M 25 37 Q 24 55 23 66 Q 23 72 26 72 Q 28 72 27 63 Z" fill="#881337"/>
-    <path d="M 37 30 Q 38 45 39 51 Q 39 55 37 55 Q 35 55 35 48 Z" fill="#9f1239"/>
   </svg>
 
-  <svg class="corazon-sangre" style="bottom: 22%; left: 24%; width: 44px; animation-delay: 1.6s;" viewBox="0 0 50 75">
+  <svg class="corazon-sangre" style="bottom: 12%; left: 16%; width: 30px; animation-delay: 1.6s;" viewBox="0 0 50 75">
     <path d="M 25 38 C 25 38 5 24 5 13 C 5 6.5 10 2 16.5 2 C 20.3 2 23.6 4.1 25 7.2 C 26.4 4.1 29.7 2 33.5 2 C 40 2 45 6.5 45 13 C 45 24 25 38 25 38 Z" fill="#e11d48"/>
     <path d="M 25 37 Q 24 55 23 66 Q 23 72 26 72 Q 28 72 27 63 Z" fill="#881337"/>
   </svg>
@@ -412,7 +412,6 @@
             <stop offset="100%" stop-color="var(--tallo-2)"/>
           </linearGradient>
 
-          <!-- Gradiente del Cono de Luz que hace florecer -->
           <linearGradient id="gradCono" x1="0.5" y1="0" x2="0.5" y2="1">
             <stop offset="0%" stop-color="#fff8e7" stop-opacity="0.9"/>
             <stop offset="35%" stop-color="#fbcfe8" stop-opacity="0.5"/>
@@ -428,7 +427,6 @@
           </filter>
         </defs>
 
-        <!-- Cono de Luz enfocado hacia las flores/semillas -->
         <polygon class="cono-luz" id="conoLuz" points="150,-20 15,380 285,380" fill="url(#gradCono)" />
 
         <g id="planta-izq">
@@ -492,10 +490,10 @@
   const cielo = document.getElementById('cielo');
 
   // Puntitos parpadeando (Estrellas)
-  for (let i = 0; i < 65; i++) {
+  for (let i = 0; i < 55; i++) {
     const e = document.createElement('div');
     e.className = 'estrella';
-    const s = Math.random() * 2.5 + 1;
+    const s = Math.random() * 2.2 + 1;
     e.style.width = s + 'px';
     e.style.height = s + 'px';
     e.style.top = Math.random() * 100 + '%';
@@ -504,11 +502,11 @@
     cielo.appendChild(e);
   }
 
-  // Polvo flotante iluminado por la luz de la ventana
-  for (let i = 0; i < 45; i++) {
+  // Polvo flotante iluminado
+  for (let i = 0; i < 35; i++) {
     const polvo = document.createElement('div');
     polvo.className = 'mota-polvo';
-    const size = Math.random() * 3 + 1.2;
+    const size = Math.random() * 2.5 + 1.2;
     polvo.style.width = size + 'px';
     polvo.style.height = size + 'px';
     polvo.style.top = (Math.random() * 90) + '%';
@@ -518,7 +516,6 @@
     cielo.appendChild(polvo);
   }
 
-  // Crecimiento de los Tulipanes
   const esperar = (ms) => new Promise(r => setTimeout(r, ms));
 
   async function crecerTulipan(sufijo, retrasoInicial) {
@@ -540,14 +537,12 @@
     await esperar(700);
     document.getElementById('jardinWrap').classList.add('visible');
 
-    // Inicia crecimiento de semillas
     const crecimiento = Promise.all([
       crecerTulipan('centro', 0),
       crecerTulipan('izq', 300),
       crecerTulipan('der', 450)
     ]);
 
-    // JUSTO DESPUÉS de aparecer las semillas, se despliega el cono de luz
     await esperar(400);
     document.getElementById('conoLuz').classList.add('on');
 
