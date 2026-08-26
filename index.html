@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --negro: #030106;
+    --negro: #08040d;
     --blanco: #f5f0f2;
     --tallo-1: #2f5c3c;
     --tallo-2: #4c8a58;
@@ -25,11 +25,10 @@
   body {
     margin: 0;
     min-height: 100vh;
-    background: 
-      radial-gradient(circle at 50% 20%, rgba(192, 38, 211, 0.35) 0%, transparent 45%),
-      radial-gradient(circle at 25% 70%, rgba(147, 51, 234, 0.25) 0%, transparent 40%),
-      radial-gradient(circle at 75% 65%, rgba(219, 39, 119, 0.2) 0%, transparent 45%),
-      radial-gradient(ellipse at 50% 25%, #2d0b3f 0%, #13051c 50%, var(--negro) 85%);
+    background-color: var(--negro);
+    background-image: 
+      radial-gradient(circle at 50% 30%, rgba(45, 15, 55, 0.5) 0%, transparent 70%),
+      radial-gradient(circle at 80% 80%, rgba(20, 8, 30, 0.8) 0%, transparent 50%);
     background-attachment: fixed;
     color: var(--blanco);
     display: flex;
@@ -42,14 +41,15 @@
     position: relative;
   }
 
+  /* Textura de fondo sutil */
   body::before {
     content: "";
     position: fixed;
     inset: 0;
     background: repeating-linear-gradient(
       135deg,
-      rgba(255,255,255,0.025) 0px,
-      rgba(255,255,255,0.025) 1px,
+      rgba(255,255,255,0.015) 0px,
+      rgba(255,255,255,0.015) 1px,
       transparent 1px,
       transparent 7px
     );
@@ -57,16 +57,31 @@
     z-index: 1;
   }
 
-  /* Canvas del Muro de Fuego en la mitad inferior */
-  #canvasFuego {
+  /* HAZ DE LUZ ENTRANDO POR LA VENTANA */
+  .luz-ventana {
     position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 50vh;
+    top: -20%;
+    left: -10%;
+    width: 75vw;
+    height: 140vh;
+    background: linear-gradient(
+      115deg,
+      rgba(255, 235, 210, 0.22) 0%,
+      rgba(215, 170, 235, 0.12) 30%,
+      rgba(140, 80, 160, 0.03) 70%,
+      transparent 100%
+    );
+    transform: rotate(-12deg);
     pointer-events: none;
     z-index: 2;
+    filter: blur(18px);
     mix-blend-mode: screen;
+    animation: respirarLuz 7s ease-in-out infinite alternate;
+  }
+
+  @keyframes respirarLuz {
+    0% { opacity: 0.75; filter: blur(18px); }
+    100% { opacity: 1; filter: blur(14px); }
   }
 
   /* 6 Cruces Góticas */
@@ -97,28 +112,47 @@
     inset: 0;
     pointer-events: none;
     overflow: hidden;
-    z-index: 1;
+    z-index: 3;
   }
+
+  /* Puntitos parpadeando */
   .estrella {
     position: absolute;
     background: #ffffff;
     border-radius: 50%;
     animation: parpadeo 3.2s ease-in-out infinite;
   }
-  .luciernaga {
-    position: absolute;
-    background: #ffe9a8;
-    border-radius: 50%;
-    box-shadow: 0 0 8px 3px rgba(230, 160, 255, 0.7);
-    animation: flotar 6s ease-in-out infinite;
-  }
+
   @keyframes parpadeo {
-    0%, 100% { opacity: 0.25; transform: scale(0.8); }
-    50% { opacity: 1; transform: scale(1.2); }
+    0%, 100% { opacity: 0.2; transform: scale(0.8); }
+    50% { opacity: 0.9; transform: scale(1.3); }
   }
-  @keyframes flotar {
-    0%, 100% { transform: translateY(0) translateX(0); opacity: 0.5; }
-    50% { transform: translateY(-10px) translateX(4px); opacity: 1; }
+
+  /* Polvo flotante iluminado */
+  .mota-polvo {
+    position: absolute;
+    background: rgba(255, 245, 225, 0.85);
+    border-radius: 50%;
+    box-shadow: 0 0 6px rgba(255, 230, 190, 0.8);
+    pointer-events: none;
+    animation: flotarPolvo linear infinite;
+  }
+
+  @keyframes flotarPolvo {
+    0% {
+      transform: translateY(0) translateX(0) scale(0.8);
+      opacity: 0;
+    }
+    20% {
+      opacity: 0.9;
+    }
+    80% {
+      opacity: 0.8;
+    }
+    100% {
+      transform: translateY(-110px) translateX(35px) scale(1.2);
+      opacity: 0;
+    }
   }
 
   .escena {
@@ -257,8 +291,8 @@
 </head>
 <body>
 
-  <!-- Muro de Fuego Canvas -->
-  <canvas id="canvasFuego"></canvas>
+  <!-- Haz de Luz de Ventana -->
+  <div class="luz-ventana"></div>
 
   <div class="cielo" id="cielo"></div>
 
@@ -421,7 +455,7 @@
       </svg>
     </div>
 
-    <!-- Mensaje Final Actualizado -->
+    <!-- Mensaje Final -->
     <p class="final" id="mensajeFinal">
       Gracias por este maravilloso mes juntos. Me hubiera encantado darte flores físicas,
       pero en su lugar hice esto solo para ti, mi linda vampira. 🌷🦇
@@ -429,8 +463,9 @@
   </div>
 
 <script>
-  // Estrellas y Luciérnagas
   const cielo = document.getElementById('cielo');
+
+  // Puntitos parpadeando (Estrellas)
   for (let i = 0; i < 65; i++) {
     const e = document.createElement('div');
     e.className = 'estrella';
@@ -439,84 +474,23 @@
     e.style.height = s + 'px';
     e.style.top = Math.random() * 100 + '%';
     e.style.left = Math.random() * 100 + '%';
-    e.style.animationDelay = (Math.random() * 3) + 's';
+    e.style.animationDelay = (Math.random() * 3.5) + 's';
     cielo.appendChild(e);
   }
-  for (let i = 0; i < 7; i++) {
-    const f = document.createElement('div');
-    f.className = 'luciernaga';
-    const s = Math.random() * 3.5 + 3;
-    f.style.width = s + 'px';
-    f.style.height = s + 'px';
-    f.style.top = (20 + Math.random() * 50) + '%';
-    f.style.left = (15 + Math.random() * 70) + '%';
-    f.style.animationDelay = (Math.random() * 4) + 's';
-    cielo.appendChild(f);
+
+  // Polvo flotante iluminado por la luz de la ventana
+  for (let i = 0; i < 45; i++) {
+    const polvo = document.createElement('div');
+    polvo.className = 'mota-polvo';
+    const size = Math.random() * 3 + 1.2;
+    polvo.style.width = size + 'px';
+    polvo.style.height = size + 'px';
+    polvo.style.top = (Math.random() * 90) + '%';
+    polvo.style.left = (Math.random() * 85) + '%';
+    polvo.style.animationDuration = (Math.random() * 10 + 7) + 's';
+    polvo.style.animationDelay = (Math.random() * 5) + 's';
+    cielo.appendChild(polvo);
   }
-
-  // Muro de Fuego Vivo
-  const canvasFuego = document.getElementById('canvasFuego');
-  const ctxFuego = canvasFuego.getContext('2d');
-  let width, height;
-
-  function resizeFuego() {
-    width = canvasFuego.width = window.innerWidth;
-    height = canvasFuego.height = window.innerHeight * 0.50;
-  }
-  window.addEventListener('resize', resizeFuego);
-  resizeFuego();
-
-  class Llama {
-    constructor() {
-      this.reset();
-    }
-    reset() {
-      this.x = Math.random() * width;
-      this.y = height + Math.random() * 20;
-      this.vx = (Math.random() - 0.5) * 1.8;
-      this.vy = -(Math.random() * 3.5 + 2.2);
-      this.size = Math.random() * 28 + 16;
-      this.life = Math.random() * 0.6 + 0.4;
-      this.maxLife = this.life;
-    }
-    update() {
-      this.x += this.vx;
-      this.y += this.vy;
-      this.life -= 0.014;
-      this.size *= 0.958;
-      if (this.life <= 0 || this.size < 2) {
-        this.reset();
-      }
-    }
-    draw() {
-      const ratio = this.life / this.maxLife;
-      ctxFuego.save();
-      ctxFuego.globalCompositeOperation = 'lighter';
-      const grad = ctxFuego.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
-      grad.addColorStop(0, `rgba(255, 235, 140, ${ratio * 0.9})`);
-      grad.addColorStop(0.25, `rgba(255, 110, 20, ${ratio * 0.75})`);
-      grad.addColorStop(0.65, `rgba(220, 20, 60, ${ratio * 0.35})`);
-      grad.addColorStop(1, `rgba(80, 0, 40, 0)`);
-      
-      ctxFuego.fillStyle = grad;
-      ctxFuego.beginPath();
-      ctxFuego.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-      ctxFuego.fill();
-      ctxFuego.restore();
-    }
-  }
-
-  const particulasFuego = Array.from({ length: 260 }, () => new Llama());
-
-  function animarFuego() {
-    ctxFuego.clearRect(0, 0, width, height);
-    particulasFuego.forEach(p => {
-      p.update();
-      p.draw();
-    });
-    requestAnimationFrame(animarFuego);
-  }
-  animarFuego();
 
   // Crecimiento de los Tulipanes
   const esperar = (ms) => new Promise(r => setTimeout(r, ms));
