@@ -16,6 +16,7 @@
     --rosa-medio: #ff9dc0;
     --rosa-fuerte: #ef6f9c;
     --rosa-sombra: #b8497a;
+    --pelaje-murcielago: #4a3728;
   }
 
   * { box-sizing: border-box; }
@@ -23,10 +24,12 @@
   html, body { 
     height: 100%; 
     width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
   }
 
   body {
-    margin: 0;
     min-height: 100dvh;
     background-color: var(--negro);
     background-image: 
@@ -39,8 +42,6 @@
     align-items: center;
     text-align: center;
     font-family: "Cormorant Garamond", serif;
-    overflow: hidden;
-    padding: 16px;
     position: relative;
   }
 
@@ -85,6 +86,59 @@
   @keyframes respirarLuz {
     0% { opacity: 0.75; filter: blur(18px); }
     100% { opacity: 1; filter: blur(14px); }
+  }
+
+  /* LUNA EN ECLIPSE LUNAR PARCIALMENTE ROJA */
+  .luna-eclipse {
+    position: fixed;
+    top: 14%;
+    left: 50%;
+    transform: translate(-50%, -20%) scale(0.7);
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #fff2db 0%, #e6a57e 30%, #991b1b 70%, #450a0a 100%);
+    box-shadow: 
+      0 0 25px rgba(239, 68, 68, 0.7),
+      0 0 55px rgba(185, 28, 28, 0.4),
+      inset -20px -10px 30px rgba(15, 3, 25, 0.85);
+    opacity: 0;
+    z-index: 6;
+    pointer-events: none;
+    transition: opacity 2s ease, transform 2.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .luna-eclipse.on {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+
+  /* MURCIÉLAGOS */
+  .murcielago {
+    position: fixed;
+    z-index: 7;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1.2s ease, transform 1.2s ease;
+  }
+
+  .murcielago svg {
+    fill: var(--pelaje-murcielago);
+    filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.9));
+    animation: aleteo 1.6s ease-in-out infinite alternate;
+  }
+
+  .murcielago.bat1 { top: 12%; left: 20%; transform: scale(0.5) rotate(-12deg); }
+  .murcielago.bat2 { top: 9%; right: 18%; transform: scale(0.65) rotate(15deg); }
+  .murcielago.bat3 { top: 22%; right: 26%; transform: scale(0.45) rotate(-8deg); }
+
+  .murcielago.on {
+    opacity: 0.9;
+  }
+
+  @keyframes aleteo {
+    0% { transform: scaleY(1) translateY(0); }
+    100% { transform: scaleY(0.65) translateY(-6px); }
   }
 
   /* Cruces Góticas */
@@ -152,45 +206,32 @@
     }
   }
 
-  /* Contenedor Principal */
-  .escena {
+  /* CENTRADO ABSOLUTO DE BIENVENIDA Y BOTÓN */
+  .intro-grupo {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 380px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 16px;
-    width: 100%;
-    max-width: 420px;
-    height: 100dvh;
-    position: relative;
-    z-index: 10;
-  }
-
-  /* CENTRADO PERFECTO PARA EL TEXTO DE BIENVENIDA Y BOTÓN */
-  .intro-grupo {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    padding: 0 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 18px;
-    z-index: 20;
+    gap: 20px;
+    z-index: 30;
     transition: opacity 0.8s ease, transform 0.8s ease;
   }
 
   .intro-grupo.oculto {
     opacity: 0;
-    transform: translate(-50%, -65%) scale(0.95);
+    transform: translate(-50%, -70%) scale(0.9);
     pointer-events: none;
   }
 
   h1 {
     font-family: "UnifrakturCook", serif;
-    font-size: clamp(36px, 9vw, 48px);
+    font-size: clamp(34px, 8.5vw, 46px);
     margin: 0;
     letter-spacing: 1px;
     line-height: 1.1;
@@ -198,10 +239,9 @@
   }
 
   p.intro {
-    font-size: clamp(18px, 4.8vw, 22px);
+    font-size: clamp(18px, 4.5vw, 22px);
     margin: 0;
     color: #e7dde3;
-    padding: 0 10px;
     text-shadow: 0 0 8px rgba(180, 80, 220, 0.6);
   }
 
@@ -223,6 +263,21 @@
     background-color: var(--blanco);
     color: var(--negro);
     box-shadow: 0 0 25px rgba(210, 130, 255, 0.9);
+  }
+
+  /* Contenedor Secundario (Flor e Historia) */
+  .escena {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    width: 100%;
+    max-width: 420px;
+    height: 100dvh;
+    position: relative;
+    z-index: 10;
+    padding: 16px;
   }
 
   .jardin-wrap {
@@ -323,6 +378,26 @@
   <!-- Haz de Luz de Ventana -->
   <div class="luz-ventana"></div>
 
+  <!-- Luna en Eclipse Lunar -->
+  <div class="luna-eclipse" id="lunaEclipse"></div>
+
+  <!-- Murciélagos en color café pelaje -->
+  <div class="murcielago bat1" id="bat1">
+    <svg width="60" height="40" viewBox="0 0 100 60">
+      <path d="M50 25 C40 10 25 5 0 20 C10 30 15 42 22 50 C26 44 32 40 38 42 C40 35 44 32 50 35 C56 32 60 35 62 42 C68 40 74 44 78 50 C85 42 90 30 100 20 C75 5 60 10 50 25 Z"/>
+    </svg>
+  </div>
+  <div class="murcielago bat2" id="bat2">
+    <svg width="60" height="40" viewBox="0 0 100 60">
+      <path d="M50 25 C40 10 25 5 0 20 C10 30 15 42 22 50 C26 44 32 40 38 42 C40 35 44 32 50 35 C56 32 60 35 62 42 C68 40 74 44 78 50 C85 42 90 30 100 20 C75 5 60 10 50 25 Z"/>
+    </svg>
+  </div>
+  <div class="murcielago bat3" id="bat3">
+    <svg width="60" height="40" viewBox="0 0 100 60">
+      <path d="M50 25 C40 10 25 5 0 20 C10 30 15 42 22 50 C26 44 32 40 38 42 C40 35 44 32 50 35 C56 32 60 35 62 42 C68 40 74 44 78 50 C85 42 90 30 100 20 C75 5 60 10 50 25 Z"/>
+    </svg>
+  </div>
+
   <div class="cielo" id="cielo"></div>
 
   <!-- CRUCES GÓTICAS -->
@@ -398,17 +473,15 @@
     <path d="M 25 37 Q 24 55 23 66 Q 23 72 26 72 Q 28 72 27 63 Z" fill="#881337"/>
   </svg>
 
-  <!-- Escena Principal -->
+  <!-- Mensaje de Bienvenida y Botón Centrados -->
+  <div class="intro-grupo" id="introGrupo">
+    <h1>Hola, mi vida 🦇🩸</h1>
+    <p class="intro">Hice algo pequeño y con todo el corazón, para ti.</p>
+    <button id="botonInicio">Dale clic aquí</button>
+  </div>
+
+  <!-- Escena Principal (Flores) -->
   <div class="escena">
-
-    <!-- Mensaje de Bienvenida y Botón Centrados -->
-    <div class="intro-grupo" id="introGrupo">
-      <h1>Hola, mi vida 🦇🩸</h1>
-      <p class="intro">Hice algo pequeño y con todo el corazón, para ti.</p>
-      <button id="botonInicio">Dale clic aquí</button>
-    </div>
-
-    <!-- Ramo y Flores -->
     <div class="jardin-wrap" id="jardinWrap">
       <svg class="ramo" viewBox="0 0 300 380" xmlns="http://www.w3.org/2000/svg">
         <defs>
@@ -554,9 +627,27 @@
     await esperar(400);
     document.getElementById('conoLuz').classList.add('on');
 
+    // Esperar a que las flores broten completamente
     await crecimiento;
 
-    await esperar(500);
+    // 1. Desaparecer el cono de luz
+    await esperar(300);
+    document.getElementById('conoLuz').classList.remove('on');
+
+    // 2. Aparecer la Luna Llena en Eclipse Lunar
+    await esperar(800);
+    document.getElementById('lunaEclipse').classList.add('on');
+
+    // 3. Aparecer los 3 Murciélagos
+    await esperar(1200);
+    document.getElementById('bat1').classList.add('on');
+    await esperar(250);
+    document.getElementById('bat2').classList.add('on');
+    await esperar(250);
+    document.getElementById('bat3').classList.add('on');
+
+    // 4. Mostrar mensaje final
+    await esperar(800);
     document.getElementById('mensajeFinal').classList.add('on');
   });
 </script>
