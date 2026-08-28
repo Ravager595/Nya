@@ -88,20 +88,31 @@
     100% { opacity: 1; filter: blur(14px); }
   }
 
-  /* LUNA EN ECLIPSE LUNAR PARCIALMENTE ROJA */
+  /* LUNA EN ECLIPSE LUNAR CON TEXTURA Y TAMAÑO DE LA FLOR */
   .luna-eclipse {
     position: fixed;
     top: 14%;
     left: 50%;
     transform: translate(-50%, -20%) scale(0.7);
-    width: 130px;
-    height: 130px;
+    width: 58px;
+    height: 58px;
     border-radius: 50%;
-    background: radial-gradient(circle at 35% 35%, #fff2db 0%, #e6a57e 30%, #991b1b 70%, #450a0a 100%);
+    background: 
+      /* Cráteres definidos */
+      radial-gradient(circle at 35% 40%, rgba(40, 5, 10, 0.8) 0%, rgba(40, 5, 10, 0.8) 7%, transparent 8%),
+      radial-gradient(circle at 65% 60%, rgba(35, 5, 10, 0.75) 0%, rgba(35, 5, 10, 0.75) 5%, transparent 6%),
+      radial-gradient(circle at 50% 75%, rgba(45, 8, 12, 0.75) 0%, rgba(45, 8, 12, 0.75) 9%, transparent 10%),
+      radial-gradient(circle at 75% 32%, rgba(50, 10, 15, 0.7) 0%, rgba(50, 10, 15, 0.7) 6%, transparent 7%),
+      radial-gradient(circle at 25% 65%, rgba(40, 5, 10, 0.65) 0%, rgba(40, 5, 10, 0.65) 4%, transparent 5%),
+      /* Mares lunares (manchas oscuras) */
+      radial-gradient(circle at 40% 30%, rgba(65, 12, 18, 0.6) 0%, transparent 35%),
+      radial-gradient(circle at 60% 65%, rgba(60, 10, 15, 0.6) 0%, transparent 40%),
+      /* Gradiente base de luz a sombra roja */
+      radial-gradient(circle at 35% 35%, #fff2db 0%, #e6a57e 30%, #991b1b 70%, #450a0a 100%);
     box-shadow: 
-      0 0 25px rgba(239, 68, 68, 0.7),
-      0 0 55px rgba(185, 28, 28, 0.4),
-      inset -20px -10px 30px rgba(15, 3, 25, 0.85);
+      0 0 15px rgba(239, 68, 68, 0.7),
+      0 0 35px rgba(185, 28, 28, 0.4),
+      inset -10px -5px 15px rgba(15, 3, 25, 0.85);
     opacity: 0;
     z-index: 6;
     pointer-events: none;
@@ -128,9 +139,9 @@
     animation: aleteo 1.6s ease-in-out infinite alternate;
   }
 
-  .murcielago.bat1 { top: 12%; left: 20%; transform: scale(0.5) rotate(-12deg); }
-  .murcielago.bat2 { top: 9%; right: 18%; transform: scale(0.65) rotate(15deg); }
-  .murcielago.bat3 { top: 22%; right: 26%; transform: scale(0.45) rotate(-8deg); }
+  .murcielago.bat1 { top: 12%; left: 20%; transform: scale(0.55) rotate(-12deg); }
+  .murcielago.bat2 { top: 9%; right: 18%; transform: scale(0.7) rotate(15deg); }
+  .murcielago.bat3 { top: 22%; right: 26%; transform: scale(0.5) rotate(-8deg); }
 
   .murcielago.on {
     opacity: 0.9;
@@ -381,17 +392,17 @@
 
   <div class="murcielago bat1" id="bat1">
     <svg width="60" height="40" viewBox="0 0 100 60">
-      <path d="M50 25 C40 10 25 5 0 20 C10 30 15 42 22 50 C26 44 32 40 38 42 C40 35 44 32 50 35 C56 32 60 35 62 42 C68 40 74 44 78 50 C85 42 90 30 100 20 C75 5 60 10 50 25 Z"/>
+      <path d="M 50,22 C 48,19 46,12 45,12 C 44,16 44,22 40,24 C 32,18 20,12 0,18 C 8,26 14,34 18,44 C 24,38 30,36 36,40 C 40,44 42,48 45,52 C 47,54 50,56 50,56 C 50,56 53,54 55,52 C 58,48 60,44 64,40 C 70,36 76,38 82,44 C 86,34 92,26 100,18 C 80,12 68,18 60,24 C 56,22 56,16 55,12 C 54,12 52,19 50,22 Z"/>
     </svg>
   </div>
   <div class="murcielago bat2" id="bat2">
     <svg width="60" height="40" viewBox="0 0 100 60">
-      <path d="M50 25 C40 10 25 5 0 20 C10 30 15 42 22 50 C26 44 32 40 38 42 C40 35 44 32 50 35 C56 32 60 35 62 42 C68 40 74 44 78 50 C85 42 90 30 100 20 C75 5 60 10 50 25 Z"/>
+      <path d="M 50,22 C 48,19 46,12 45,12 C 44,16 44,22 40,24 C 32,18 20,12 0,18 C 8,26 14,34 18,44 C 24,38 30,36 36,40 C 40,44 42,48 45,52 C 47,54 50,56 50,56 C 50,56 53,54 55,52 C 58,48 60,44 64,40 C 70,36 76,38 82,44 C 86,34 92,26 100,18 C 80,12 68,18 60,24 C 56,22 56,16 55,12 C 54,12 52,19 50,22 Z"/>
     </svg>
   </div>
   <div class="murcielago bat3" id="bat3">
     <svg width="60" height="40" viewBox="0 0 100 60">
-      <path d="M50 25 C40 10 25 5 0 20 C10 30 15 42 22 50 C26 44 32 40 38 42 C40 35 44 32 50 35 C56 32 60 35 62 42 C68 40 74 44 78 50 C85 42 90 30 100 20 C75 5 60 10 50 25 Z"/>
+      <path d="M 50,22 C 48,19 46,12 45,12 C 44,16 44,22 40,24 C 32,18 20,12 0,18 C 8,26 14,34 18,44 C 24,38 30,36 36,40 C 40,44 42,48 45,52 C 47,54 50,56 50,56 C 50,56 53,54 55,52 C 58,48 60,44 64,40 C 70,36 76,38 82,44 C 86,34 92,26 100,18 C 80,12 68,18 60,24 C 56,22 56,16 55,12 C 54,12 52,19 50,22 Z"/>
     </svg>
   </div>
 
