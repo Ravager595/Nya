@@ -98,7 +98,6 @@
     height: 261px;
     border-radius: 50%;
     background: 
-      /* Gradiente base de luz a sombra roja */
       radial-gradient(circle at 35% 35%, #fff2db 0%, #e6a57e 30%, #991b1b 70%, #450a0a 100%);
     box-shadow: 
       0 0 15px rgba(239, 68, 68, 0.7),
@@ -247,7 +246,7 @@
     text-shadow: 0 0 8px rgba(180, 80, 220, 0.6);
   }
 
-  button {
+  button#botonInicio {
     font-family: "UnifrakturCook", serif;
     font-size: 20px;
     padding: 12px 32px;
@@ -261,7 +260,7 @@
     backdrop-filter: blur(6px);
     -webkit-tap-highlight-color: transparent;
   }
-  button:active, button:hover {
+  button#botonInicio:active, button#botonInicio:hover {
     background-color: var(--blanco);
     color: var(--negro);
     box-shadow: 0 0 25px rgba(210, 130, 255, 0.9);
@@ -355,20 +354,76 @@
 
   .petalo-sombra { fill: var(--rosa-sombra); opacity: 0.5; }
 
-  .final {
-    font-size: clamp(18px, 4.5vw, 21px);
-    line-height: 1.35;
-    margin: 0;
-    padding: 0 12px;
+  /* ESTILOS DEL CARRUSEL DE TEXTO */
+  .contenedor-mensaje {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 380px;
     opacity: 0;
     transform: translateY(10px);
     transition: opacity 1s ease, transform 1s ease;
-    max-width: 360px;
     position: relative;
     z-index: 10;
-    text-shadow: 0 0 10px rgba(200, 100, 240, 0.7);
   }
-  .final.on { opacity: 1; transform: translateY(0); }
+  .contenedor-mensaje.on {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .slider-texto {
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+  }
+
+  .track-texto {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    width: 100%;
+  }
+
+  .slide-texto {
+    min-width: 100%;
+    font-size: clamp(17px, 4.2vw, 20px);
+    line-height: 1.35;
+    margin: 0;
+    padding: 0 8px;
+    text-shadow: 0 0 10px rgba(200, 100, 240, 0.7);
+    box-sizing: border-box;
+  }
+
+  .btn-nav {
+    background: rgba(15, 3, 24, 0.7);
+    border: 1px solid var(--rosa-fuerte);
+    color: var(--blanco);
+    font-size: 16px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: 0.3s;
+    backdrop-filter: blur(4px);
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+
+  .btn-nav:hover, .btn-nav:active {
+    background-color: var(--rosa-fuerte);
+    color: var(--negro);
+    box-shadow: 0 0 12px var(--rosa-fuerte);
+  }
+
+  .btn-nav.oculto {
+    opacity: 0;
+    pointer-events: none;
+  }
 
   @media (prefers-reduced-motion: reduce) {
     * { transition-duration: 0.01ms !important; animation: none !important; }
@@ -635,10 +690,20 @@
       </svg>
     </div>
 
-    <p class="final" id="mensajeFinal">
-      Gracias por este maravilloso mes juntos. Me hubiera encantado darte flores físicas,
-      pero en su lugar hice esto solo para ti, mi linda vampira. 🌷🦇
-    </p>
+    <div class="contenedor-mensaje" id="contenedorMensaje">
+      <button class="btn-nav oculto" id="btnPrev" aria-label="Anterior">&#10094;</button>
+      <div class="slider-texto">
+        <div class="track-texto" id="trackTexto">
+          <p class="slide-texto">
+            Gracias por este maravilloso mes (y 4 días) juntos. Me hubiera encantado darte flores físicas, pero en su lugar hice esto solo para ti, mi linda vampira. 🌷🦇🩸
+          </p>
+          <p class="slide-texto">
+            &lt;texto&gt;
+          </p>
+        </div>
+      </div>
+      <button class="btn-nav" id="btnNext" aria-label="Siguiente">&#10095;</button>
+    </div>
   </div>
 
 <script>
@@ -686,6 +751,44 @@
     document.getElementById(`capullo-${sufijo}`).classList.add('on');
   }
 
+  /* LÓGICA DE NAVEGACIÓN Y SLIDER DE TEXTO */
+  let slideActual = 0;
+  const track = document.getElementById('trackTexto');
+  const slides = document.querySelectorAll('.slide-texto');
+  const btnPrev = document.getElementById('btnPrev');
+  const btnNext = document.getElementById('btnNext');
+
+  function actualizarSlider() {
+    track.style.transform = `translateX(-${slideActual * 100}%)`;
+    
+    // Ocultar/mostrar flechas según la posición
+    if (slideActual === 0) {
+      btnPrev.classList.add('oculto');
+    } else {
+      btnPrev.classList.remove('oculto');
+    }
+
+    if (slideActual === slides.length - 1) {
+      btnNext.classList.add('oculto');
+    } else {
+      btnNext.classList.remove('oculto');
+    }
+  }
+
+  btnPrev.addEventListener('click', () => {
+    if (slideActual > 0) {
+      slideActual--;
+      actualizarSlider();
+    }
+  });
+
+  btnNext.addEventListener('click', () => {
+    if (slideActual < slides.length - 1) {
+      slideActual++;
+      actualizarSlider();
+    }
+  });
+
   document.getElementById('botonInicio').addEventListener('click', async () => {
     document.getElementById('introGrupo').classList.add('oculto');
     await esperar(700);
@@ -719,9 +822,9 @@
     await esperar(250);
     document.getElementById('bat3').classList.add('on');
 
-    // 4. Mostrar mensaje final
+    // 4. Mostrar mensaje final y controles del slider
     await esperar(800);
-    document.getElementById('mensajeFinal').classList.add('on');
+    document.getElementById('contenedorMensaje').classList.add('on');
   });
 </script>
 </body>
